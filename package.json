@@ -1,0 +1,18 @@
+{
+  "name": "honeybadger",
+  "version": "0.0.0",
+  "description": "The honeybadger is an incredibly ferocious and feisty animal. It is also a service for adding badges to your repo.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpivo/honeybadger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpivo/honeybadger/issues"
+  },
+  "homepage": "https://github.com/rpivo/honeybadger#readme"
+}
