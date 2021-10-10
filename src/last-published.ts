@@ -10,7 +10,7 @@ exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
   try {
-    const packageVersion = execSync(`npm show ${packageName} version`);
+    const packageVersion = execSync(`npm view ${packageName} versions`);
 
     const response = {
       statusCode: 200,
