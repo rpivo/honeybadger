@@ -1,4 +1,5 @@
-const { spawnSync } = require('child_process');
+const { EventEmitter } = require("stream");
+const https = require("https");
 
 interface APIGatewayEvent {
   pathParameters: {
@@ -9,19 +10,31 @@ interface APIGatewayEvent {
 exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
-  try {
-    const packageVersion = spawnSync('npm', ['view', packageName, 'versions']);
+  https
+    .get(
+      `https://registry.npmjs.org/${packageName}`,
+      (res: typeof EventEmitter) => {
+        let data = "";
 
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(packageVersion),
-    };
-    return response;
-  } catch (e) {
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(e),
-    };
-    return response;
-  }
+        res.on("data", (chunk: string) => {
+          data += chunk;
+        });
+
+        res.on("end", () => {
+          const json = JSON.parse(data);
+          const packageVersion = json["dist-tags"].latest;
+
+          return {
+            statusCode: 200,
+            body: JSON.stringify(packageVersion),
+          };
+        });
+      }
+    )
+    .on("error", (e: unknown) => {
+      return {
+        statusCode: 200,
+        body: JSON.stringify(e),
+      };
+    });
 };
