@@ -14,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/rpivo/honeybadger/issues"
   },
-  "homepage": "https://github.com/rpivo/honeybadger#readme"
+  "homepage": "https://github.com/rpivo/honeybadger#readme",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  }
 }
