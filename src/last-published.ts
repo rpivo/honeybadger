@@ -1,3 +1,4 @@
+import { makeBadge } from "badge-maker";
 import https from "https";
 
 interface APIGatewayEvent {
@@ -22,9 +23,17 @@ exports.handler = async (event: APIGatewayEvent) => {
           const json = JSON.parse(data);
           const packageVersion = json["dist-tags"].latest;
 
+          const format = {
+            label: "Latest Version",
+            message: packageVersion,
+            color: "green",
+          };
+
+          const svg = makeBadge(format);
+
           resolve({
             statusCode: 200,
-            body: JSON.stringify(packageVersion),
+            body: JSON.stringify(svg),
           });
         });
       })
