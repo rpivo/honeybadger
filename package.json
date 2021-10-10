@@ -4,7 +4,9 @@
   "description": "The honeybadger is an incredibly ferocious and feisty animal. It is also a service for adding badges to your repo.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "zip": "sh sh/zip.sh"
   },
   "repository": {
     "type": "git",
