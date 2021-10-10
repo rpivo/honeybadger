@@ -10,31 +10,33 @@ interface APIGatewayEvent {
 exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
-  https
-    .get(
-      `https://registry.npmjs.org/${packageName}`,
-      (res: typeof EventEmitter) => {
-        let data = "";
+  return await new Promise((resolve, reject) => {
+    https
+      .get(
+        `https://registry.npmjs.org/${packageName}`,
+        (response: typeof EventEmitter) => {
+          let data = "";
 
-        res.on("data", (chunk: string) => {
-          data += chunk;
+          response.on("data", (chunk: string) => {
+            data += chunk;
+          });
+
+          response.on("end", () => {
+            const json = JSON.parse(data);
+            const packageVersion = json["dist-tags"].latest;
+
+            resolve({
+              statusCode: 200,
+              body: JSON.stringify(packageVersion),
+            });
+          });
+        }
+      )
+      .on("error", (e: unknown) => {
+        reject({
+          statusCode: 200,
+          body: JSON.stringify(e),
         });
-
-        res.on("end", () => {
-          const json = JSON.parse(data);
-          const packageVersion = json["dist-tags"].latest;
-
-          return {
-            statusCode: 200,
-            body: JSON.stringify(packageVersion),
-          };
-        });
-      }
-    )
-    .on("error", (e: unknown) => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(e),
-      };
-    });
+      });
+  });
 };
