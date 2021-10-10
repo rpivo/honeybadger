@@ -1,5 +1,4 @@
-const { EventEmitter } = require("stream");
-const https = require("https");
+import https from "https";
 
 interface APIGatewayEvent {
   pathParameters: {
@@ -12,26 +11,23 @@ exports.handler = async (event: APIGatewayEvent) => {
 
   return await new Promise((resolve, reject) => {
     https
-      .get(
-        `https://registry.npmjs.org/${packageName}`,
-        (response: typeof EventEmitter) => {
-          let data = "";
+      .get(`https://registry.npmjs.org/${packageName}`, (response) => {
+        let data = "";
 
-          response.on("data", (chunk: string) => {
-            data += chunk;
+        response.on("data", (chunk: string) => {
+          data += chunk;
+        });
+
+        response.on("end", () => {
+          const json = JSON.parse(data);
+          const packageVersion = json["dist-tags"].latest;
+
+          resolve({
+            statusCode: 200,
+            body: JSON.stringify(packageVersion),
           });
-
-          response.on("end", () => {
-            const json = JSON.parse(data);
-            const packageVersion = json["dist-tags"].latest;
-
-            resolve({
-              statusCode: 200,
-              body: JSON.stringify(packageVersion),
-            });
-          });
-        }
-      )
+        });
+      })
       .on("error", (e: unknown) => {
         reject({
           statusCode: 200,
