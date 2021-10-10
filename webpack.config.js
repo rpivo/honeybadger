@@ -1,6 +1,6 @@
 module.exports = {
   entry: "./src/last-published.ts",
-  mode: "production",
+  mode: "development",
   module: {
     rules: [
       {
