@@ -9,11 +9,19 @@ interface APIGatewayEvent {
 exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
-  const packageVersion = execSync(`npm show ${packageName} version`);
+  try {
+    const packageVersion = execSync(`npm show ${packageName} version`);
 
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(packageVersion),
-  };
-  return response;
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(packageVersion),
+    };
+    return response;
+  } catch (e) {
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(e),
+    };
+    return response;
+  }
 };
