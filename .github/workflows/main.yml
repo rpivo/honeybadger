@@ -5,8 +5,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+      - uses: aws-actions/configure-aws-credentials@v1
         with:
-          node-version: '16'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          node-version: "16"
       - run: |
           npm i
           npm run zip
+          aws lambda update-function-code \
+            --function-name badges-last-published \
+            --zip-file fileb://dist/badges-last-published.zip
