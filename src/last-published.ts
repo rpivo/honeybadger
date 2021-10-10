@@ -1,4 +1,4 @@
-const execSync = require("child_process").execSync;
+const { spawnSync } = require('child_process');
 
 interface APIGatewayEvent {
   pathParameters: {
@@ -10,7 +10,7 @@ exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
   try {
-    const packageVersion = execSync(`npm view ${packageName} versions`);
+    const packageVersion = spawnSync('npm', ['view', packageName, 'versions']);
 
     const response = {
       statusCode: 200,
