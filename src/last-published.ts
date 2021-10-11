@@ -16,6 +16,10 @@ exports.handler = async (event: APIGatewayEvent) => {
       message: "Bad Fetch",
       color: "green",
     };
+    const headers = {
+      "Cache-Control": "private, max-age=86400",
+      "Content-Type": "image/svg+xml",
+    };
 
     https
       .get(`https://registry.npmjs.org/${packageName}`, (response) => {
@@ -32,6 +36,7 @@ exports.handler = async (event: APIGatewayEvent) => {
           resolve({
             statusCode: 200,
             body: makeBadge(format),
+            headers,
           });
         });
       })
@@ -40,6 +45,7 @@ exports.handler = async (event: APIGatewayEvent) => {
         reject({
           statusCode: 200,
           body: makeBadge(format),
+          headers,
         });
       });
   });
