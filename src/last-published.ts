@@ -11,6 +11,12 @@ exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
   return await new Promise((resolve, reject) => {
+    const format = {
+      label: "Latest Version",
+      message: "Bad Fetch",
+      color: "green",
+    };
+
     https
       .get(`https://registry.npmjs.org/${packageName}`, (response) => {
         let data = "";
@@ -21,26 +27,19 @@ exports.handler = async (event: APIGatewayEvent) => {
 
         response.on("end", () => {
           const json = JSON.parse(data);
-          const packageVersion = json["dist-tags"].latest;
-
-          const format = {
-            label: "Latest Version",
-            message: packageVersion,
-            color: "green",
-          };
-
-          const svg = makeBadge(format);
+          format.message = json["dist-tags"].latest;
 
           resolve({
             statusCode: 200,
-            body: JSON.stringify(svg),
+            body: makeBadge(format),
           });
         });
       })
       .on("error", (e: unknown) => {
+        console.error("An error occurred while fetching the badge", e);
         reject({
           statusCode: 200,
-          body: JSON.stringify(e),
+          body: makeBadge(format),
         });
       });
   });
