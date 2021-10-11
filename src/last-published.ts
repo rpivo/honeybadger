@@ -1,4 +1,4 @@
-import { makeBadge } from "badge-maker";
+import { makeBadge, Format } from "badge-maker";
 import https from "https";
 
 interface APIGatewayEvent {
@@ -11,10 +11,12 @@ exports.handler = async (event: APIGatewayEvent) => {
   const { package: packageName } = event.pathParameters;
 
   return await new Promise((resolve, reject) => {
-    const format = {
+    const format = <Format>{
+      color: "2AB358",
       label: "Latest Version",
+      labelColor: "253B4D",
       message: "Bad Fetch",
-      color: "green",
+      style: 'plastic'
     };
     const headers = {
       "Cache-Control": "private, max-age=86400",
