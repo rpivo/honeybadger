@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "clean": "rm -rf dist",
-    "zip": "sh sh/zip.sh"
+    "zip": "npm run clean && npm run build && node scripts/zip.js"
   },
   "repository": {
     "type": "git",

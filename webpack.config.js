@@ -1,5 +1,8 @@
 module.exports = {
-  entry: "./src/last-published.ts",
+  entry: {
+    'last-published': './src/last-published.ts',
+    'latest-version': './src/latest-version.ts',
+  },
   mode: "development",
   module: {
     rules: [
@@ -11,7 +14,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: "last-published.js",
+    filename: "[name].js",
   },
   resolve: {
     extensions: [".js", ".ts"],
