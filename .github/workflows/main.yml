@@ -17,3 +17,6 @@ jobs:
           aws lambda update-function-code \
             --function-name badges-last-published \
             --zip-file fileb://dist/badges-last-published.zip
+          aws lambda update-function-code \
+            --function-name badges-latest-version \
+            --zip-file fileb://dist/badges-latest-version.zip
