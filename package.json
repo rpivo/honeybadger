@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "clean": "rm -rf dist",
+    "lint": "npx prettier --write .",
     "test": "jest",
     "zip": "npm run clean && npm run build && node scripts/zip.js"
   },
@@ -24,6 +25,7 @@
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.3",
     "jest": "^27.3.1",
+    "prettier": "^2.4.1",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",

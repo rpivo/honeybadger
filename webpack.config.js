@@ -3,21 +3,21 @@ module.exports = {
     'last-published': './src/last-published.ts',
     'latest-version': './src/latest-version.ts',
   },
-  mode: "development",
+  mode: 'development',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
   },
   output: {
-    filename: "[name].js",
+    filename: '[name].js',
   },
   resolve: {
-    extensions: [".js", ".ts"],
+    extensions: ['.js', '.ts'],
   },
-  target: "node",
+  target: 'node',
 };
