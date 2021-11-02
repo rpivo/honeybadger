@@ -43,18 +43,30 @@ exports.handler = async (event: APIGatewayEvent) => {
           const publishDate = new Date(json.time[latestVersion]);
           const currentDate = new Date();
 
+          // @ts-ignore
+          const timeSincePublishedInMS = currentDate - publishDate;
+          const oneDay = 1000 * 60 * 60 * 24;
+          const DaysSincePublished = Math.floor(
+            timeSincePublishedInMS / oneDay
+          );
+
+          const dayPublished = publishDate.getDate();
+          const currentDay = currentDate.getDate();
+
           const yearPublished = publishDate.getFullYear();
           const currentYear = currentDate.getFullYear();
 
-          if (yearPublished === currentYear) {
+          if (DaysSincePublished < 31) {
+            format.color = Colors.GREEN;
+            format.message = `${DaysSincePublished} day${
+              DaysSincePublished === 1 ? '' : 's'
+            } ago`;
+          } else if (yearPublished === currentYear) {
             const monthPublished = publishDate.getMonth();
             const currentMonth = currentDate.getMonth();
 
             if (monthPublished === currentMonth) {
               format.color = Colors.GREEN;
-
-              const dayPublished = publishDate.getDate();
-              const currentDay = currentDate.getDate();
 
               if (dayPublished === currentDay) {
                 format.message = 'Today';
